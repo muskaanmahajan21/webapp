@@ -26,6 +26,23 @@ pipeline {
                 }
             }
         }
+
+        pipeline {
+    triggers {
+        cron('H 10 * * *') // Runs daily at 10 AM
+    }
+
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Scheduled build triggered at 10 AM'
+            }
+        }
+    }
+}
+
         stage('Sonar-Report') {
             steps {
                 bat 'mvn clean install sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dsonar.analysis.mode=publish'
@@ -33,3 +50,21 @@ pipeline {
         }
     }
 }
+
+
+pipeline {
+    triggers {
+        pollSCM('H/15 * * * *') // Polls every 15 minutes
+    }
+
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Polling SCM for changes...'
+            }
+        }
+    }
+}
+
