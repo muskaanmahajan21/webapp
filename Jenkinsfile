@@ -1,15 +1,7 @@
 pipeline {
-  agent any  {
-    label 'master'
-  }
+  agent { label 'master' }
 
   stages {
-    stage('Checkout SCM') {
-      steps {
-        checkout scm
-      }
-    }
-
     stage('Build') {
       steps {
         bat 'mvn -B -DskipTests clean package'
