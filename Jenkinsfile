@@ -1,5 +1,7 @@
 pipeline {
-  agent any   // runs on any available node; change to label if needed
+  agent any  {
+    label 'master'
+  }
 
   stages {
     stage('Checkout SCM') {
