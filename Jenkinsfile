@@ -26,9 +26,17 @@ pipeline {
                 }
             }
         }
-        stage('Sonar-Report') {
-            steps {
-                bat 'mvn clean install sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dsonar.analysis.mode=publish'
+       stage('Sonar-Report') {
+  steps {
+    withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+      bat '''
+        mvn sonar:sonar ^
+          -Dsonar.host.url=http://localhost:9000 ^
+          -Dsonar.token=%SONAR_TOKEN% ^
+          -Dsonar.projectKey=webapp1 ^
+          -Dsonar.projectName=Webapp1 ^
+          -Dsonar.sourceEncoding=UTF-8
+      ''''
             }
         }
     }
